@@ -3,6 +3,8 @@ package it.dsibilio.rsocketdemo.api.rest;
 import it.dsibilio.rsocketdemo.domain.Tweet;
 import it.dsibilio.rsocketdemo.domain.TweetRequest;
 import it.dsibilio.rsocketdemo.service.TweetService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -31,6 +33,14 @@ public class TweetController {
     @GetMapping(value = "/socket/{author}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<Tweet> getByAuthorViaSocket(@PathVariable String author) {
         return requester.flatMapMany(r -> r.route("tweets.by.author").data(new TweetRequest(author)).retrieveFlux(Tweet.class));
+    }
+
+    // helloWorld
+    @GetMapping(value = "/helloWorld", produces = {"application/json"})
+    public ResponseEntity<?> helloWorld()
+    {
+        String rtnString = "hello world";
+        return new ResponseEntity<>(rtnString, HttpStatus.I_AM_A_TEAPOT);
     }
 
 }
